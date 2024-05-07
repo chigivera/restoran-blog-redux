@@ -10,7 +10,7 @@ const Categories = ({ categories, selectedCategory, setSelectedCategory }) => {
     };
 
     return (
-        <div className='categories ml-2 flex flex-wrap max-w-xs p-6 w-fit bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'>
+        <div className='categories ml-2 flex flex-wrap max-w-xs p-6  bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'>
             {categories.map((category) => (
                 <span
                     key={category.id}

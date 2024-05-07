@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import UserOptions from './userOptions';
 import LoginOptions from './loginOptions';
-import { useAuth } from '../context/AuthContext';
+import { useSelector } from 'react-redux';
 
 const NavBar = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     // const { user } = useAuth();
-    const [user, setuser] = useState(false);
+    const {authenticated} = useSelector(store => store.auth)
     const handleToggle = () => {
         setIsDrawerOpen(!isDrawerOpen);
     };
@@ -17,7 +17,7 @@ const NavBar = () => {
                     <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
                         <span className="block self-center text-2xl font-semibold whitespace-nowrap dark:text-white">RestoranBlog</span>
                     </a>
-                    {user ? (
+                    {authenticated ? (
                         <button 
                             type="button" 
                             className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" 
@@ -36,7 +36,7 @@ const NavBar = () => {
                 </div>
             </nav>
 
-            {user && (
+            {authenticated && (
                 <div id="drawer-example" className={`fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform ${isDrawerOpen ? 'translate-x-0' : '-translate-x-full'} bg-white w-80 dark:bg-gray-800`} aria-labelledby="drawer-label">
                     <UserOptions />
                 </div>

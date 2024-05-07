@@ -1,6 +1,6 @@
 import React, {  useState } from 'react';
 import { useDispatch,  } from 'react-redux';
-const CreateCategory = ({ toggleModal, showModal,addCategory }) => {
+const CreateCategory = ({ toggleModal,addCategory }) => {
     const [categoryName, setCategoryName] = useState('');
     const dispatch = useDispatch();
     
@@ -18,8 +18,7 @@ const CreateCategory = ({ toggleModal, showModal,addCategory }) => {
     };
 
     return (
-        <div>
-            {showModal && (
+       
                 <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto bg-black bg-opacity-50">
                     <div className="relative w-full max-w-md p-4 max-h-full bg-white rounded-lg shadow dark:bg-gray-700">
                         <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
@@ -60,8 +59,6 @@ const CreateCategory = ({ toggleModal, showModal,addCategory }) => {
                         </form>
                     </div>
                 </div>
-            )}
-        </div>
     );
 };
 

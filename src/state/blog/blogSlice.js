@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createArticle, createCategory, fetchArticle, fetchArticles, fetchCategories, removeArticle, removeCategory, searchArticleByCategory, searchArticleByQuery } from "../../services/blog";
+import { createArticle, createCategory, fetchArticle, fetchArticles, fetchCategories, removeArticle, removeCategory, searchArticleByCategory } from "../../services/blog";
 
 const initialState = {
     article: null,
@@ -73,13 +73,7 @@ export const deleteCategory = createAsyncThunk('category/delete', async (id) => 
     }
 });
 
-export const fetchArticlesByQuery = createAsyncThunk(
-    'articles/fetchByQuery',
-    async (query) => {
-      const response = await searchArticleByQuery(query);
-      return response.data; // Assuming the API returns a JSON object with a `data` property containing the articles
-    }
-  );
+
   
   // Async thunk for searching articles by category
   export const fetchArticlesByCategory = createAsyncThunk(
@@ -93,6 +87,13 @@ export const fetchArticlesByQuery = createAsyncThunk(
 const blogSlice = createSlice({
     name: 'blog',
     initialState,
+    reducers :{
+        filterArticlesByQuery: (state, action) => {
+            state.filteredArticles = state.articles.filter(article => 
+              article.title.includes(action.payload)
+            );
+          },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getArticles.pending, (state) => {
@@ -101,8 +102,10 @@ const blogSlice = createSlice({
             })
             .addCase(getArticles.fulfilled, (state, action) => {
                 state.articles = action.payload;
+                state.filteredArticles = state.articles
                 state.loading = false;
                 state.error = false;
+                state.success = false
             })
             .addCase(getArticle.fulfilled, (state, action) => {
                 state.article = action.payload
@@ -116,12 +119,14 @@ const blogSlice = createSlice({
             })
             .addCase(addArticle.fulfilled, (state, action) => {
                 state.articles.push(action.payload);
+                state.success = true
             })
             .addCase(addArticle.rejected, (state) => {
                 state.error = true;
             })
             .addCase(deleteArticle.fulfilled, (state, action) => {
                 state.articles = action.payload
+                state.success = true
             })
             .addCase(deleteArticle.rejected, (state) => {
                 state.error = true;
@@ -141,29 +146,20 @@ const blogSlice = createSlice({
             })
             .addCase(addCategory.fulfilled, (state, action) => {
                 state.categories.push(action.payload);
+                state.success = true
+
             })
             .addCase(addCategory.rejected, (state) => {
                 state.error = true;
             })
             .addCase(deleteCategory.fulfilled, (state, action) => {
                 state.categories = state.categories.filter(category => category.id !== action.payload);
+                state.success = true
+
             })
             .addCase(deleteCategory.rejected, (state) => {
                 state.error = true;
             })
-            .addCase(fetchArticlesByQuery.pending, (state) => {
-                state.loading = true;
-                state.error = false;
-              })
-              .addCase(fetchArticlesByQuery.fulfilled, (state, action) => {
-                state.articles = action.payload;
-                state.loading = false;
-                state.error = false;
-              })
-              .addCase(fetchArticlesByQuery.rejected, (state) => {
-                state.loading = false;
-                state.error = true;
-              })
               .addCase(fetchArticlesByCategory.pending, (state) => {
                 state.loading = true;
                 state.error = false;
@@ -179,5 +175,5 @@ const blogSlice = createSlice({
               });
     }
 });
-const {reducer} = blogSlice
-export default reducer;
+export const { filterArticlesByQuery } = blogSlice.actions
+export default blogSlice.reducer;

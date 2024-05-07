@@ -1,12 +1,14 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { logout } from '../state/blog/authSlice';
 
 const UserOptions = () => {
-    const { logout } = useAuth();
+    const { isAdmin } = useSelector(store => store.auth)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleLogout = () => {
-        logout()
+        dispatch(logout())
         navigate('/')
     }
     return (
@@ -14,9 +16,12 @@ const UserOptions = () => {
             <li>
                 <Link to="/profile" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Profile</Link>
             </li>
-            <li>
+            {
+                isAdmin
+                && <li>
                 <Link to="/add-article" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">New Article</Link>
             </li>
+            }
             <li>
                 <Link to="/" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Home</Link>
             </li>

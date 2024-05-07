@@ -3,23 +3,42 @@ import { useForm } from 'react-hook-form';
 import Editor from '../components/Editor';
 import axios from 'axios';
 import CreateCategory from '../components/CreateCategory';
-import {  useDispatch, useSelector } from 'react-redux';
-import { getCategories,addCategory,addArticle } from '../state/blog/blogSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategories, addCategory, addArticle } from '../state/blog/blogSlice';
+import Alert from '../components/Alert';
+import { useNavigate } from 'react-router-dom';
+
 function AddArticle() {
-    const { categories, loading } = useSelector((store) => store.blog);
+    const { categories, success, error, loading } = useSelector((store) => store.blog);
+    const navigate = useNavigate();
     const [editorContent, setEditorContent] = useState('');
     const { register, handleSubmit, formState: { errors }, setError } = useForm();
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const dispatch = useDispatch()  
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const dispatch = useDispatch();
+    
     useEffect(() => {
-        dispatch(getCategories())
-    }, [categories]);
+        dispatch(getCategories());
+    }, [dispatch]);
+
     const toggleModal = () => {
         setShowModal(!showModal);
     };
+    useEffect(() => {
+        if (success) {
+          setAlertMessage('Added Article Successfully');
+          setTimeout(() => {
+            navigate('/');
+          }, 3000);
+      
+        } else if (error) {
+          setAlertMessage('Submit failed. Please try again.');
+        }
+      }, [success, error]);
 
     const onSubmit = async (data) => {
         if (!editorContent.trim()) {
@@ -57,17 +76,19 @@ function AddArticle() {
             };
 
             dispatch(addArticle(combinedData));
-            // Optionally, redirect or clear the form after successful submission
         } catch (error) {
             console.error('Error uploading image:', error);
         } finally {
             setUploading(false);
         }
     };
-
+    console.log(editorContent)
     return (
         <div className="add-article flex w-full justify-center">
+                  {success || error ? <Alert success={success} error={error} message={alertMessage} /> : null}
+
             {showModal && <CreateCategory toggleModal={toggleModal} showModal={showModal} addCategory={addCategory} />}
+        
             <form onSubmit={handleSubmit(onSubmit)} className=''>
                 <div className="flex w-full justify-center">
                     <legend className='text-3xl '>Add Article</legend>
@@ -104,10 +125,8 @@ function AddArticle() {
                 <div id="editor" className='max-w-xl'>
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                     <Editor
-                        initialValue="<p>Hello, World!</p>"
-                        onGetContent={(content) => {
-                            setEditorContent(content);
-                        }}
+                        editorContent={editorContent}
+                        setEditorContent={setEditorContent}
                     />
                     {errors.description && <div className="text-red-500">{errors.description.message}</div>}
                 </div>

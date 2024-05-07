@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Article from './Article';
 
-const ArticleList = ({articles}) => {
+const ArticleList = ({articles,loading}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10; // Number of articles per page
  
@@ -18,7 +18,12 @@ const ArticleList = ({articles}) => {
     const prevPage = () => {
         setCurrentPage(currentPage - 1);
     };
-
+    if (loading) {
+        return <div>Loading...</div>; // You can replace this with a spinner component if you have one
+      }
+    if (articles.length === 0) {
+        return <div className='text-3xl flex w-full h-96 justify-center items-center'>No articles found</div>;
+      }
     return (
         <div className="article-list ">
             <ul className='grid md:grid-cols-2 min-h-96'>
