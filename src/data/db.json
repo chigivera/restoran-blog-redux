@@ -1,0 +1,74 @@
+{
+  "users": [
+    {
+      "user_id": "1",
+      "username": "john_doe",
+      "email": "john@example.com",
+      "password": "hashed_password_1",
+      "role": "author",
+      "bio": "John is a tech enthusiast and blogger.",
+      "created_at": "2023-01-01T12:00:00Z",
+      "id": "a852"
+    },
+    {
+      "user_id": "2",
+      "username": "jane_smith",
+      "email": "jane@example.com",
+      "password": "hashed_password_2",
+      "role": "reader",
+      "bio": "Jane loves reading and commenting on tech articles.",
+      "created_at": "2023-02-01T15:30:00Z",
+      "id": "0068"
+    },
+    {
+      "user_id": "3",
+      "username": "alice_jones",
+      "email": "alice@example.com",
+      "password": "hashed_password_3",
+      "role": "author",
+      "bio": "Alice is a software developer and part-time blogger.",
+      "created_at": "2023-03-10T09:20:00Z",
+      "id": "a667"
+    }
+  ],
+  "articles": [
+   
+    {
+      "id": "681d",
+      "title": "test",
+      "category_id": "3",
+      "file": {
+        "0": {}
+      },
+      "description": "<div><p>Hello, World!</p></div>",
+      "imageUrl": "https://res.cloudinary.com/dz9rgu2nb/image/upload/v1720206797/wjumflacg7gnxsexx8u2.webp",
+      "created_at": "2024-07-05T19:13:18.196Z",
+      "updated_at": "2024-07-05T19:13:18.196Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Programming",
+      "description": "Articles about various programming languages and techniques.",
+      "created_at": "2023-01-01T12:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Web Development",
+      "description": "Articles about web development frameworks and tools.",
+      "created_at": "2023-01-01T12:00:00Z"
+    },
+    {
+      "id": "3",
+      "name": "Artificial Intelligence",
+      "description": "Articles about AI and machine learning.",
+      "created_at": "2023-01-01T12:00:00Z"
+    },
+    {
+      "id": "63f1",
+      "name": "Sea Food",
+      "created_at": "2024-07-05T17:05:23.515Z"
+    }
+  ]
+}
